@@ -9,11 +9,11 @@ import {
   Mail,
   MapPin,
   MonitorSmartphone,
-  Search,
   Sparkles,
   Star,
   Users,
 } from "lucide-react";
+import { HeroCatalogSearch } from "@/components/catalog-search";
 import { LibraryTable } from "@/components/library-table";
 import { Navbar } from "@/components/navbar";
 
@@ -125,16 +125,7 @@ export default function Home() {
                 your own. Your next chapter starts here.
               </p>
 
-              <form className="hero-search" action="#catalog">
-                <Search size={21} />
-                <label className="sr-only" htmlFor="hero-search">
-                  Search the library catalog
-                </label>
-                <input id="hero-search" placeholder="Search books, authors, and more" />
-                <button type="submit" aria-label="Search">
-                  <ArrowRight size={19} />
-                </button>
-              </form>
+              <HeroCatalogSearch />
 
               <div className="hero-links">
                 <span>Popular:</span>

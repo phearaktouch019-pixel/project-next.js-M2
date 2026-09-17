@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { CatalogSearchProvider } from "@/components/catalog-search";
 import "./globals.css";
 
 const siteUrl = "https://verdant-library.example";
@@ -65,7 +66,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <CatalogSearchProvider>{children}</CatalogSearchProvider>
+      </body>
     </html>
   );
 }

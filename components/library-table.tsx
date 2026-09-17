@@ -9,6 +9,7 @@ import {
   SlidersHorizontal,
 } from "lucide-react";
 import { useMemo, useState } from "react";
+import { useCatalogSearch } from "@/components/catalog-search";
 
 type Book = {
   id: number;
@@ -56,7 +57,7 @@ const books: Book[] = [
 const pageSize = 6;
 
 export function LibraryTable() {
-  const [query, setQuery] = useState("");
+  const { query, setQuery } = useCatalogSearch();
   const [category, setCategory] = useState("All categories");
   const [status, setStatus] = useState("All status");
   const [sortKey, setSortKey] = useState<SortKey>("title");
