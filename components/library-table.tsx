@@ -23,6 +23,19 @@ type Book = {
 type SortKey = "title" | "author" | "year";
 type SortDirection = "asc" | "desc";
 
+const mobileSortOptions: {
+  key: SortKey;
+  direction: SortDirection;
+  label: string;
+}[] = [
+  { key: "title", direction: "asc", label: "Title: A–Z" },
+  { key: "title", direction: "desc", label: "Title: Z–A" },
+  { key: "author", direction: "asc", label: "Author: A–Z" },
+  { key: "author", direction: "desc", label: "Author: Z–A" },
+  { key: "year", direction: "desc", label: "Year: newest first" },
+  { key: "year", direction: "asc", label: "Year: oldest first" },
+];
+
 const books: Book[] = [
   { id: 1, title: "The Overstory", author: "Richard Powers", category: "Fiction", year: 2018, format: "Hardcover", status: "Available" },
   { id: 2, title: "Braiding Sweetgrass", author: "Robin Wall Kimmerer", category: "Nature", year: 2013, format: "Paperback", status: "Checked out" },
@@ -101,6 +114,20 @@ export function LibraryTable() {
     setPage(1);
   }
 
+  function updateMobileSort(value: string) {
+    const option = mobileSortOptions.find(
+      ({ key, direction }) => `${key}-${direction}` === value,
+    );
+
+    if (!option) {
+      return;
+    }
+
+    setSortKey(option.key);
+    setSortDirection(option.direction);
+    setPage(1);
+  }
+
   return (
     <div className="catalog-panel">
       <div className="catalog-toolbar">
@@ -142,6 +169,22 @@ export function LibraryTable() {
               <option>Reference</option>
             </select>
           </label>
+          <label className="mobile-sort">
+            <span>Sort books</span>
+            <select
+              value={`${sortKey}-${sortDirection}`}
+              onChange={(event) => updateMobileSort(event.target.value)}
+            >
+              {mobileSortOptions.map((option) => (
+                <option
+                  key={`${option.key}-${option.direction}`}
+                  value={`${option.key}-${option.direction}`}
+                >
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
       </div>
 
@@ -149,18 +192,42 @@ export function LibraryTable() {
         <table>
           <thead>
             <tr>
-              <th>
+              <th
+                aria-sort={
+                  sortKey === "title"
+                    ? sortDirection === "asc"
+                      ? "ascending"
+                      : "descending"
+                    : "none"
+                }
+              >
                 <button type="button" onClick={() => updateSort("title")}>
                   Title {sortKey === "title" && (sortDirection === "asc" ? <ArrowDownAZ size={15} /> : <ArrowUpAZ size={15} />)}
                 </button>
               </th>
-              <th>
+              <th
+                aria-sort={
+                  sortKey === "author"
+                    ? sortDirection === "asc"
+                      ? "ascending"
+                      : "descending"
+                    : "none"
+                }
+              >
                 <button type="button" onClick={() => updateSort("author")}>
                   Author {sortKey === "author" && (sortDirection === "asc" ? <ArrowDownAZ size={15} /> : <ArrowUpAZ size={15} />)}
                 </button>
               </th>
               <th>Category</th>
-              <th>
+              <th
+                aria-sort={
+                  sortKey === "year"
+                    ? sortDirection === "asc"
+                      ? "ascending"
+                      : "descending"
+                    : "none"
+                }
+              >
                 <button type="button" onClick={() => updateSort("year")}>
                   Year {sortKey === "year" && (sortDirection === "asc" ? <ArrowDownAZ size={15} /> : <ArrowUpAZ size={15} />)}
                 </button>
